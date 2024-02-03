@@ -6,7 +6,7 @@ const client = await MongoClient.connect(
   { useNewUrlParser: true, useUnifiedTopology: true }
 );
 
-const getGolfers = async (req, res) => {
+export const getGolfers = async (req, res) => {
     // try {
     //     const golfers = await client.db('golf-tracker').collection('golfers');
     //     res.status(200).json(golfers);
@@ -15,10 +15,12 @@ const getGolfers = async (req, res) => {
     // }
     try {
         const golfers = await golferData.find();
+        res.status(200).json(golfers);
     }
     catch (error) {
         res.status(404).json({ message: error.message });
     }
+   
 };
 
 console.log("getGolfers: ", getGolfers);
@@ -27,12 +29,12 @@ console.log("getGolfers: ", getGolfers);
  * Requires the MongoDB Node.js Driver
  * https://mongodb.github.io/node-mongodb-native
  */
-const filter = {};
+// const filter = {};
 
-const coll = client.db('golf-tracker').collection('golfers');
-const cursor = coll.find(filter);
-const result = await cursor.toArray();
-console.log(result);
-await client.close();
+// const coll = client.db('golf-tracker').collection('golfers');
+// const cursor = coll.find(filter);
+// const result = await cursor.toArray();
+// console.log(result);
+// await client.close();
 
-export default getGolfers;
+// export default getGolfers;

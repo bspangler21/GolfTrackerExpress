@@ -62,6 +62,8 @@ try {
 
 // const golferrouter= require("./Routes/golfer.js"); // Fix the casing of the file path
 app.use('/golfers', golferRoute); // Fix the variable name
+// console.log("golferRoute: ", golferRoute);
+// console.log("app: ", app.use('/golfers', golferRoute));
 
 app.use((req, res, next) => {
   const error = new Error("Not Found");

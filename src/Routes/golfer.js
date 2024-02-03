@@ -1,7 +1,7 @@
 // const express = require("express");
 import { Router } from "express";
 const router = Router();
-import getGolfers from "../Controllers/golfers.js";
+import {getGolfers} from "../Controllers/golfers.js";
 
 // const mongoURL = 'mongodb+srv://bspangler21:CM2xP2C2Ul5jLf7l@spangdev.xsqup9m.mongodb.net/?retryWrites=true&w=majority',
 // const client = await MongoClient.connect(
