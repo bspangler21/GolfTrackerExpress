@@ -1,4 +1,5 @@
-const { default: mongoose } = require("mongoose");
+// const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const golferSchema = mongoose.Schema({
   _id: {
@@ -20,4 +21,6 @@ const golferSchema = mongoose.Schema({
   });
 
   var golferData = mongoose.model('golferData', golferSchema);
-  module.exports = golferData;
+// export default mongoose.Model("Golfer", golferSchema);
+// module.exports = golferData;
+export default golferData;
