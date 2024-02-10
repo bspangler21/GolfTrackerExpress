@@ -11,16 +11,21 @@ const morgan = require("morgan");
 
 // Path is a built-in Node.js module
 const path = require("path");
-
 const PORT = process.env.PORT || 5000;
-
 // Create an Express application
 const app = express();
+const golfersRouter = express.Router();
 // tiny for less information; combined for more information
 app.use(morgan("tiny"));
 
 // Serve static files from the public directory (css, js, images)
 app.use(express.static(path.join(__dirname, "/public/")));
+
+
+golfersRouter.route("/").get((req, res) => {
+  res.send("Golfers");
+});
+app.use("/golfers", golfersRouter);
 
 app.get("/", (req, res) => {
 	res.send("Hello World!");
