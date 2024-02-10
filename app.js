@@ -25,6 +25,11 @@ app.use(express.static(path.join(__dirname, "/public/")));
 golfersRouter.route("/").get((req, res) => {
   res.send("Golfers");
 });
+
+golfersRouter.route("/1").get((req, res) => {
+  res.send("Single Golfer");
+});
+
 app.use("/golfers", golfersRouter);
 
 app.get("/", (req, res) => {
