@@ -12,6 +12,8 @@ const morgan = require("morgan");
 // Path is a built-in Node.js module
 const path = require("path");
 
+const PORT = process.env.PORT || 5000;
+
 // Create an Express application
 const app = express();
 // tiny for less information; combined for more information
@@ -25,6 +27,6 @@ app.get("/", (req, res) => {
 });
 
 // Start the server
-app.listen(5000, () => {
-	debug(`listening on port ${chalk.green("5000")}`);
+app.listen(PORT, () => {
+	debug(`listening on port ${chalk.green(PORT)}`);
 });
