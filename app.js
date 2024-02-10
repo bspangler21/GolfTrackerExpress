@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 5000;
 // Create an Express application
 const app = express();
 const golfersRouter = require("./src/routers/golfersRouter");
+const adminRouter = require("./src/routers/adminRouter");
 // tiny for less information; combined for more information
 app.use(morgan("tiny"));
 
