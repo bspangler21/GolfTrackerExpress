@@ -3,8 +3,8 @@ const express = require("express");
 const chalk = require("chalk");
 // Debug is a small debugging utility module that is used to debug a Node.js application
 // Only runs in debug mode. Run this by running DEBUG=* node app.js
-// or set DEBUG=* & node app.js for Windows
-// or set debug=app & node app.js to only get debug messages from app
+// Or set DEBUG=* & node app.js for Windows
+// Or set debug=app & node app.js to only get debug messages from app
 const debug = require("debug")("app");
 // Log web traffic to console (Morgan = middleware)
 const morgan = require("morgan");
