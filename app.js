@@ -9,10 +9,16 @@ const debug = require("debug")("app");
 // Log web traffic to console (Morgan = middleware)
 const morgan = require("morgan");
 
+// Path is a built-in Node.js module
+const path = require("path");
+
 // Create an Express application
 const app = express();
 // tiny for less information; combined for more information
 app.use(morgan("tiny"));
+
+// Serve static files from the public directory (css, js, images)
+app.use(express.static(path.join(__dirname, "/public/")));
 
 app.get("/", (req, res) => {
 	res.send("Hello World!");
