@@ -23,6 +23,7 @@ adminRouter.route("/").get((req, res) => {
 					name: "Tiger Woods",
 				},
 			]);
+      res.json(response);
 		} catch (error) {
 			debug(error.stack);
 		}
