@@ -2,11 +2,10 @@
 	"name": "golftrackerexpress",
 	"version": "1.0.0",
 	"description": "Node.js API for the Golf League Tracker",
-	"main": "src/index.js",
-	"type": "module",
+	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "nodemon src/index.js"
+		"start": "node index.mjs"
 	},
 	"author": "",
 	"license": "ISC",

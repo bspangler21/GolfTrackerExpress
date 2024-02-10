@@ -12,11 +12,11 @@
 
 // const express = require('express');
 // const mongoose = require('mongoose');
-import express from 'express';
-import mongoose from 'mongoose';
+import express from "express";
+import mongoose from "mongoose";
 const app = express();
 // const { MongoClient, ServerApiVersion } = require('mongodb');
-import golferRoute from './Routes/golfer.js';
+import golferRoute from "./Routes/golfer.mjs";
 
 // const uri = "mongodb+srv://bspangler21:CM2xP2C2Ul5jLf7l@spangdev.xsqup9m.mongodb.net/?retryWrites=true&w=majority";
 // // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -41,18 +41,19 @@ import golferRoute from './Routes/golfer.js';
 // }
 // run().catch(console.dir);
 
-const url = "mongodb+srv://bspangler21:CM2xP2C2Ul5jLf7l@spangdev.xsqup9m.mongodb.net/?retryWrites=true&w=majority"; // Replace with your MongoDB connection URL
+const url =
+	"mongodb+srv://bspangler21:CM2xP2C2Ul5jLf7l@spangdev.xsqup9m.mongodb.net/?retryWrites=true&w=majority"; // Replace with your MongoDB connection URL
 mongoose.connect(url, { useNewUrlParser: true });
 const con = mongoose.connection;
 
 app.use(express.json());
 
 try {
-    con.on('open', () => {
-        console.log('Connected to the database');
-    })
+	con.on("open", () => {
+		console.log("Connected to the database");
+	});
 } catch (error) {
-    console.log("Error: " + error);
+	console.log("Error: " + error);
 }
 
 // const port = 5000;
@@ -61,24 +62,24 @@ try {
 // });
 
 // const golferrouter= require("./Routes/golfer.js"); // Fix the casing of the file path
-app.use('/golfers', golferRoute); // Fix the variable name
+app.use("/golfers", golferRoute); // Fix the variable name
 // console.log("golferRoute: ", golferRoute);
 // console.log("app: ", app.use('/golfers', golferRoute));
 
 app.use((req, res, next) => {
-  const error = new Error("Not Found");
-  error.status = 404;
-  next(error);
+	const error = new Error("Not Found");
+	error.status = 404;
+	next(error);
 });
 
 app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.send({
-    error: {
-      status: err.status,
-      message: err.message,
-    },
-  });
+	res.status(err.status || 500);
+	res.send({
+		error: {
+			status: err.status,
+			message: err.message,
+		},
+	});
 });
 
-export default app; 
+export default app;
