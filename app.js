@@ -11,19 +11,33 @@ const morgan = require("morgan");
 
 // Path is a built-in Node.js module
 const path = require("path");
+
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+
 const PORT = process.env.PORT || 5000;
 // Create an Express application
 const app = express();
 const golfersRouter = require("./src/routers/golfersRouter");
 const adminRouter = require("./src/routers/adminRouter");
+const authRouter = require("./src/routers/authRouter");
 // tiny for less information; combined for more information
 app.use(morgan("tiny"));
 
 // Serve static files from the public directory (css, js, images)
 app.use(express.static(path.join(__dirname, "/public/")));
 
+//app.use(express.json());
+//app.use(express.urlencoded({ extended: false }));
+//app.use(cookieParser());
+// app.use(session({secret: bspangGolfLeagueTracker}));
+
+// Execute function from Passport
+//require("./src/config/passport.js")(app);
+
 app.use("/golfers", golfersRouter);
 app.use("/admin", adminRouter);
+// app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {
 	res.send("Hello World!");
