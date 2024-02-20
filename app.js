@@ -27,7 +27,7 @@ app.use(morgan("tiny"));
 // Serve static files from the public directory (css, js, images)
 app.use(express.static(path.join(__dirname, "/public/")));
 
-//app.use(express.json());
+app.use(express.json());
 //app.use(express.urlencoded({ extended: false }));
 //app.use(cookieParser());
 // app.use(session({secret: bspangGolfLeagueTracker}));

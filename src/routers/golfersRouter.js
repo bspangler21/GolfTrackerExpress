@@ -66,6 +66,37 @@ golfersRouter.route("/:id").get((req, res) => {
 	})();
 });
 
+golfersRouter.route("/").post((req, res) => {
+	const newGolfer = req.body;
+	console.log("newGolfer", newGolfer);
+	console.log("req.body", req.body);
+	(async function mongo() {
+		let client;
+		try {
+			client = await MongoClient.connect(
+				"mongodb+srv://bspangler21:CM2xP2C2Ul5jLf7l@spangdev.xsqup9m.mongodb.net/?retryWrites=true&w=majority"
+			);
+			debug("Connected to the MongoDb server");
+
+			// Create instance of mongo database
+			const db = client.db(dbName);
+
+			const golfer = await db.collection("golfers").insertOne({
+				FirstName: newGolfer.FirstName,
+				LastName: newGolfer.LastName,
+				Handicap: newGolfer.Handicap,
+			});
+
+			res.json(golfer);
+			res.render("golfer", {
+				golfer,
+			});
+		} catch (error) {
+			debug(error.stack);
+		}
+		// client.close();
+	})();
+});
 
 golfersRouter.route("/:id").delete((req, res) => {
 	const id = req.params.id;
