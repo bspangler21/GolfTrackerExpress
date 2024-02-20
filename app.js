@@ -21,6 +21,7 @@ const app = express();
 const golfersRouter = require("./src/routers/golfersRouter");
 const adminRouter = require("./src/routers/adminRouter");
 const authRouter = require("./src/routers/authRouter");
+const matchesRouter = require("./src/routers/matchesRouter");
 // tiny for less information; combined for more information
 app.use(morgan("tiny"));
 
@@ -37,6 +38,7 @@ app.use(express.json());
 
 app.use("/golfers", golfersRouter);
 app.use("/admin", adminRouter);
+app.use("/matches", matchesRouter);
 // app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {
