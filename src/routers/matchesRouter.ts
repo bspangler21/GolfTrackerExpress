@@ -4,12 +4,7 @@ const { MongoClient, ObjectID } = require("mongodb");
 import express, { Request, Response } from "express";
 import debug from "debug";
 // import { MongoClient, ObjectID } from "mongodb";
-import * as mongo from "mongodb";
-import { Request, Response } from "express-serve-static-core";
-import debug from "debug";
-import * as mongo from "mongodb";
-
-
+// import * as mongo from "mongodb";
 
 const matchesRouter = express.Router();
 const url: string = process.env.MONGODB_URI || "";
@@ -19,7 +14,7 @@ const mongoConnectionString: string =
 
 matchesRouter.route("/").get((req: Request, res: Response) => {
 	(async function mongo() {
-		let client: MongoClient | undefined;
+		let client: typeof MongoClient | undefined;
 		try {
 			console.log("url", url);
 			console.log("process.env.MONGODB_URI", process.env.MONGODB_URI);
@@ -35,7 +30,7 @@ matchesRouter.route("/").get((req: Request, res: Response) => {
 			res.render("matches", {
 				matches,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			debug(error.stack);
 		} finally {
 			if (client) {
@@ -47,7 +42,7 @@ matchesRouter.route("/").get((req: Request, res: Response) => {
 
 matchesRouter.route("/count").get((req: Request, res: Response) => {
 	(async function mongo() {
-		let client: MongoClient | undefined;
+		let client: typeof MongoClient | undefined;
 		try {
 			console.log("url", url);
 			console.log("process.env.MONGODB_URI", process.env.MONGODB_URI);
@@ -57,14 +52,17 @@ matchesRouter.route("/count").get((req: Request, res: Response) => {
 			// Create instance of mongo database
 			const db = client.db(dbName);
 
-			const matchesArray = await db.collection("matches").find().toArray();
+			const matchesArray = await db
+				.collection("matches")
+				.find()
+				.toArray();
 
 			const matches: number = matchesArray.length;
 
 			console.log("matches", matches);
 
 			res.send(matches.toString());
-		} catch (error) {
+		} catch (error: any) {
 			debug(error.stack);
 		} finally {
 			if (client) {
@@ -77,7 +75,7 @@ matchesRouter.route("/count").get((req: Request, res: Response) => {
 matchesRouter.route("/:id").get((req: Request, res: Response) => {
 	const id: string = req.params.id;
 	(async function mongo() {
-		let client: MongoClient | undefined;
+		let client: typeof MongoClient | undefined;
 		try {
 			client = await MongoClient.connect(mongoConnectionString);
 			debug("Connected to the MongoDb server");
@@ -93,7 +91,7 @@ matchesRouter.route("/:id").get((req: Request, res: Response) => {
 			res.render("match", {
 				match,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			debug(error.stack);
 		} finally {
 			if (client) {
@@ -108,7 +106,7 @@ matchesRouter.route("/").post((req: Request, res: Response) => {
 	console.log("newMatch", newMatch);
 	console.log("req.body", req.body);
 	(async function mongo() {
-		let client: MongoClient | undefined;
+		let client: typeof MongoClient | undefined;
 		try {
 			client = await MongoClient.connect(mongoConnectionString);
 			debug("Connected to the MongoDb server");
@@ -125,9 +123,8 @@ matchesRouter.route("/").post((req: Request, res: Response) => {
 			});
 
 			res.json(match);
-			res.render("match", {
-			});
-		} catch (error) {
+			res.render("match", {});
+		} catch (error: any) {
 			debug(error.stack);
 		} finally {
 			if (client) {
@@ -138,123 +135,3 @@ matchesRouter.route("/").post((req: Request, res: Response) => {
 });
 
 export default matchesRouter;
-
-matchesRouter.route("/count").get((req, res) => {
-	(async function mongo() {
-		let client;
-		try {
-			console.log("url", url);
-			console.log("process.env.MONGODB_URI", process.env.MONGODB_URI);
-			client = await MongoClient.connect(mongoConnectionString);
-			debug("Connected to the MongoDb server");
-
-			// Create instance of mongo database
-
-			const db = client.db(dbName);
-
-			//Can't get length here because the return is a Promise
-			const matchesArray = await db
-				.collection("matches")
-				.find()
-				.toArray();
-
-			const matches = matchesArray.length;
-
-			console.log("matches", matches);
-
-			// res.json(matches);
-			res.send(matches.toString());
-		} catch (error) {
-			debug(error.stack);
-		}
-		// client.close();
-	})();
-	// res.send("matches", matches);
-	// res.send("matches", {
-	//   matches,
-	// });
-});
-
-matchesRouter.route("/:id").get((req, res) => {
-	const id = req.params.id;
-	(async function mongo() {
-		let client;
-		try {
-			client = await MongoClient.connect(mongoConnectionString);
-			debug("Connected to the MongoDb server");
-
-			// Create instance of mongo database
-			const db = client.db(dbName);
-
-			const match = await db
-				.collection("matches")
-				.findOne({ _id: new ObjectID(id) });
-
-			res.json(match);
-			res.render("match", {
-				match,
-			});
-		} catch (error) {
-			debug(error.stack);
-		}
-		// client.close();
-	})();
-});
-
-matchesRouter.route("/").post((req, res) => {
-	const newMatch = req.body;
-	console.log("newMatch", newMatch);
-	console.log("req.body", req.body);
-	(async function mongo() {
-		let client;
-		try {
-			client = await MongoClient.connect(mongoConnectionString);
-			debug("Connected to the MongoDb server");
-
-			// Create instance of mongo database
-			const db = client.db(dbName);
-
-			// const match = await db.collection("matches").insertOne({
-			// 	FirstName: newmatch.FirstName,
-			// 	LastName: newmatch.LastName,
-			// 	Handicap: newmatch.Handicap,
-			// });
-
-			res.json(match);
-			res.render("match", {
-				match,
-			});
-		} catch (error) {
-			debug(error.stack);
-		}
-		// client.close();
-	})();
-});
-
-matchesRouter.route("/:id").delete((req, res) => {
-	const id = req.params.id;
-	(async function mongo() {
-		let client;
-		try {
-			client = await MongoClient.connect(mongoConnectionString);
-			debug("Connected to the MongoDb server");
-
-			// Create instance of mongo database
-			const db = client.db(dbName);
-
-			const match = await db
-				.collection("matches")
-				.deleteOne({ _id: new ObjectID(id) });
-
-			res.json(match);
-			res.render("match", {
-				match,
-			});
-		} catch (error) {
-			debug(error.stack);
-		}
-		// client.close();
-	})();
-});
-
-module.exports = matchesRouter;

@@ -1,27 +1,29 @@
-const express = require("express");
+import express, { Express, Request, Response } from "express";
 // Colorize our debug messages
-const chalk = require("chalk");
+import chalk from "chalk";
 // Debug is a small debugging utility module that is used to debug a Node.js application
 // Only runs in debug mode. Run this by running DEBUG=* node app.js
 // Or set DEBUG=* & node app.js for Windows
 // Or set debug=app & node app.js to only get debug messages from app
-const debug = require("debug")("app");
+import debug from "debug";
 // Log web traffic to console (Morgan = middleware)
-const morgan = require("morgan");
+import morgan from "morgan";
 
 // Path is a built-in Node.js module
-const path = require("path");
+import path from "path";
 
-const cookieParser = require("cookie-parser");
-const session = require("express-session");
+import cookieParser from "cookie-parser";
+import session from "express-session";
 
 const PORT = process.env.PORT || 5000;
 // Create an Express application
-const app = express();
-const golfersRouter = require("./src/routers/golfersRouter");
-const adminRouter = require("./src/routers/adminRouter");
-const authRouter = require("./src/routers/authRouter");
-const matchesRouter = require("./src/routers/matchesRouter");
+const app: Express = express();
+// const golfersRouter = require("./src/routers/golfersRouter");
+// const adminRouter = require("./src/routers/adminRouter");
+// const authRouter = require("./src/routers/authRouter");
+// const matchesRouter = require("./src/routers/matchesRouter");
+import matchesRouter from "./src/routers/matchesRouter";
+
 // tiny for less information; combined for more information
 app.use(morgan("tiny"));
 
@@ -36,8 +38,8 @@ app.use(express.json());
 // Execute function from Passport
 //require("./src/config/passport.js")(app);
 
-app.use("/golfers", golfersRouter);
-app.use("/admin", adminRouter);
+// app.use("/golfers", golfersRouter);
+// app.use("/admin", adminRouter);
 app.use("/matches", matchesRouter);
 // app.use("/auth", authRouter);
 
