@@ -12,12 +12,24 @@ const morgan = require("morgan");
 // Path is a built-in Node.js module
 const path = require("path");
 
+const cors = require("cors");
+
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 
 const PORT = process.env.PORT || 5000;
 // Create an Express application
 const app = express();
+
+app.use(
+	cors({
+		origin: "http://localhost:3000",
+		credentials: true,
+		allowedHeaders: "*",
+		allowedMethods: "*",
+	})
+);
+
 const golfersRouter = require("./src/routers/golfersRouter");
 const adminRouter = require("./src/routers/adminRouter");
 const authRouter = require("./src/routers/authRouter");
@@ -29,12 +41,14 @@ app.use(morgan("tiny"));
 app.use(express.static(path.join(__dirname, "/public/")));
 
 app.use(express.json());
-//app.use(express.urlencoded({ extended: false }));
-//app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 // app.use(session({secret: bspangGolfLeagueTracker}));
 
 // Execute function from Passport
 //require("./src/config/passport.js")(app);
+
+// Enable CORS
 
 app.use("/golfers", golfersRouter);
 app.use("/admin", adminRouter);

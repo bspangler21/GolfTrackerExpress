@@ -113,11 +113,13 @@ matchesRouter.route("/").post((req, res) => {
 			// Create instance of mongo database
 			const db = client.db(dbName);
 
-			// const match = await db.collection("matches").insertOne({
-			// 	FirstName: newmatch.FirstName,
-			// 	LastName: newmatch.LastName,
-			// 	Handicap: newmatch.Handicap,
-			// });
+			const match = await db.collection("matches").insertOne({
+				weekNumber: newMatch.weekNumber,
+				leagueId: newMatch.leagueId,
+				matchDate: newMatch.matchDate,
+				golfer1Id: newMatch.golfer1Id,
+				golfer2Id: newMatch.golfer2Id,
+			});
 
 			res.json(match);
 			res.render("match", {

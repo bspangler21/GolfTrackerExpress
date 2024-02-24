@@ -82,9 +82,9 @@ golfersRouter.route("/").post((req, res) => {
 			const db = client.db(dbName);
 
 			const golfer = await db.collection("golfers").insertOne({
-				FirstName: newGolfer.FirstName,
-				LastName: newGolfer.LastName,
-				Handicap: newGolfer.Handicap,
+				firstName: newGolfer.firstName,
+				lastName: newGolfer.lastName,
+				handicap: newGolfer.handicap,
 			});
 
 			res.json(golfer);
