@@ -23,6 +23,7 @@ const app: Express = express();
 // const authRouter = require("./src/routers/authRouter");
 // const matchesRouter = require("./src/routers/matchesRouter");
 import matchesRouter from "./src/routers/matchesRouter";
+import golfersRouter from "./src/routers/golfersRouter";
 
 // tiny for less information; combined for more information
 app.use(morgan("tiny"));
@@ -38,7 +39,7 @@ app.use(express.json());
 // Execute function from Passport
 //require("./src/config/passport.js")(app);
 
-// app.use("/golfers", golfersRouter);
+app.use("/golfers", golfersRouter);
 // app.use("/admin", adminRouter);
 app.use("/matches", matchesRouter);
 // app.use("/auth", authRouter);

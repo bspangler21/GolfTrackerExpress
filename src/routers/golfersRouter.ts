@@ -1,20 +1,21 @@
-const express = require("express");
-const debug = require("debug")("app:golfersRouter");
 const { MongoClient, ObjectID } = require("mongodb");
+import express, { Request, Response } from "express";
+import debug from "debug";
+import { Golfer } from "../../../Golf-Tracker/src/types/Golfer";
 
 const golfersRouter = express.Router();
-const url = process.env.MONGODB_URI || "";
-const dbName = "golf-tracker";
+const url: string = process.env.MONGODB_URI || "";
+const dbName: string = "golf-tracker";
+const mongoConnectionString: string =
+	"mongodb+srv://bspangler21:CM2xP2C2Ul5jLf7l@spangdev.xsqup9m.mongodb.net/?retryWrites=true&w=majority";
 
-golfersRouter.route("/").get((req, res) => {
+golfersRouter.route("/").get((req: Request, res: Response) => {
 	(async function mongo() {
-		let client;
+		let client: typeof MongoClient | undefined;
 		try {
 			console.log("url", url);
 			console.log("process.env.MONGODB_URI", process.env.MONGODB_URI);
-			client = await MongoClient.connect(
-				"mongodb+srv://bspangler21:CM2xP2C2Ul5jLf7l@spangdev.xsqup9m.mongodb.net/?retryWrites=true&w=majority"
-			);
+			client = await MongoClient.connect(mongoConnectionString);
 			debug("Connected to the MongoDb server");
 
 			// Create instance of mongo database
@@ -27,7 +28,7 @@ golfersRouter.route("/").get((req, res) => {
 			res.render("golfers", {
 				golfers,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			debug(error.stack);
 		}
 		// client.close();
@@ -38,20 +39,18 @@ golfersRouter.route("/").get((req, res) => {
 	// });
 });
 
-golfersRouter.route("/:id").get((req, res) => {
+golfersRouter.route("/:id").get((req: Request, res: Response) => {
 	const id = req.params.id;
 	(async function mongo() {
 		let client;
 		try {
-			client = await MongoClient.connect(
-				"mongodb+srv://bspangler21:CM2xP2C2Ul5jLf7l@spangdev.xsqup9m.mongodb.net/?retryWrites=true&w=majority"
-			);
+			client = await MongoClient.connect(mongoConnectionString);
 			debug("Connected to the MongoDb server");
 
 			// Create instance of mongo database
 			const db = client.db(dbName);
 
-			const golfer = await db
+			const golfer: Golfer = await db
 				.collection("golfers")
 				.findOne({ _id: new ObjectID(id) });
 
@@ -59,23 +58,21 @@ golfersRouter.route("/:id").get((req, res) => {
 			res.render("golfer", {
 				golfer,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			debug(error.stack);
 		}
 		// client.close();
 	})();
 });
 
-golfersRouter.route("/").post((req, res) => {
+golfersRouter.route("/").post((req: Request, res: Response) => {
 	const newGolfer = req.body;
 	console.log("newGolfer", newGolfer);
 	console.log("req.body", req.body);
 	(async function mongo() {
 		let client;
 		try {
-			client = await MongoClient.connect(
-				"mongodb+srv://bspangler21:CM2xP2C2Ul5jLf7l@spangdev.xsqup9m.mongodb.net/?retryWrites=true&w=majority"
-			);
+			client = await MongoClient.connect(mongoConnectionString);
 			debug("Connected to the MongoDb server");
 
 			// Create instance of mongo database
@@ -91,20 +88,20 @@ golfersRouter.route("/").post((req, res) => {
 			res.render("golfer", {
 				golfer,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			debug(error.stack);
 		}
 		// client.close();
 	})();
 });
 
-golfersRouter.route("/:id").delete((req, res) => {
+golfersRouter.route("/:id").delete((req: Request, res: Response) => {
 	const id = req.params.id;
 	(async function mongo() {
 		let client;
 		try {
 			client = await MongoClient.connect(
-				"mongodb+srv://bspangler21:CM2xP2C2Ul5jLf7l@spangdev.xsqup9m.mongodb.net/?retryWrites=true&w=majority"
+				mongoConnectionString
 			);
 			debug("Connected to the MongoDb server");
 
@@ -119,11 +116,11 @@ golfersRouter.route("/:id").delete((req, res) => {
 			res.render("golfer", {
 				golfer,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			debug(error.stack);
 		}
 		// client.close();
 	})();
 });
 
-module.exports = golfersRouter;
+export default golfersRouter;
