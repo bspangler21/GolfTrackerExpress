@@ -24,6 +24,7 @@ const app: Express = express();
 // const matchesRouter = require("./src/routers/matchesRouter");
 import matchesRouter from "./src/routers/matchesRouter";
 import golfersRouter from "./src/routers/golfersRouter";
+import matchScoresRouter from "./src/routers/matchScoresRouter";
 
 // tiny for less information; combined for more information
 app.use(morgan("tiny"));
@@ -42,6 +43,7 @@ app.use(express.json());
 app.use("/golfers", golfersRouter);
 // app.use("/admin", adminRouter);
 app.use("/matches", matchesRouter);
+app.use("/matchScores", matchScoresRouter);
 // app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {

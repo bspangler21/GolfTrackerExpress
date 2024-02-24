@@ -3,17 +3,17 @@
 const { MongoClient, ObjectID } = require("mongodb");
 import express, { Request, Response } from "express";
 import debug from "debug";
-import { Match } from "../../../Golf-Tracker/src/types/Match";
+import { MatchScore } from "../../../Golf-Tracker/src/types/MatchScore";
 // import { MongoClient, ObjectID } from "mongodb";
 // import * as mongo from "mongodb";
 
-const matchesRouter = express.Router();
+const matchScoresRouter = express.Router();
 const url: string = process.env.MONGODB_URI || "";
 const dbName: string = "golf-tracker";
 const mongoConnectionString: string =
 	"mongodb+srv://bspangler21:CM2xP2C2Ul5jLf7l@spangdev.xsqup9m.mongodb.net/?retryWrites=true&w=majority";
 
-matchesRouter.route("/").get((req: Request, res: Response) => {
+matchScoresRouter.route("/").get((req: Request, res: Response) => {
 	(async function mongo() {
 		let client: typeof MongoClient | undefined;
 		try {
@@ -25,14 +25,14 @@ matchesRouter.route("/").get((req: Request, res: Response) => {
 			// Create instance of mongo database
 			const db = client.db(dbName);
 
-			const matches: Match[] = await db
-				.collection("matches")
+			const matchScores: MatchScore[] = await db
+				.collection("match-scores")
 				.find()
 				.toArray();
 
-			res.json(matches);
-			res.render("matches", {
-				matches,
+			res.json(matchScores);
+			res.render("matchScores", {
+				matchScores,
 			});
 		} catch (error: any) {
 			debug(error.stack);
@@ -44,7 +44,7 @@ matchesRouter.route("/").get((req: Request, res: Response) => {
 	})();
 });
 
-matchesRouter.route("/count").get((req: Request, res: Response) => {
+matchScoresRouter.route("/count").get((req: Request, res: Response) => {
 	(async function mongo() {
 		let client: typeof MongoClient | undefined;
 		try {
@@ -56,16 +56,16 @@ matchesRouter.route("/count").get((req: Request, res: Response) => {
 			// Create instance of mongo database
 			const db = client.db(dbName);
 
-			const matchesArray: Match[] = await db
+			const matchScoresArray: MatchScore[] = await db
 				.collection("matches")
 				.find()
 				.toArray();
 
-			const matches: number = matchesArray.length;
+			const matchScores: number = matchScoresArray.length;
 
-			console.log("matches", matches);
+			console.log("matchScores", matchScores);
 
-			res.send(matches.toString());
+			res.send(matchScores.toString());
 		} catch (error: any) {
 			debug(error.stack);
 		} finally {
@@ -76,7 +76,7 @@ matchesRouter.route("/count").get((req: Request, res: Response) => {
 	})();
 });
 
-matchesRouter.route("/:id").get((req: Request, res: Response) => {
+matchScoresRouter.route("/:id").get((req: Request, res: Response) => {
 	const id: string = req.params.id;
 	(async function mongo() {
 		let client: typeof MongoClient | undefined;
@@ -87,13 +87,13 @@ matchesRouter.route("/:id").get((req: Request, res: Response) => {
 			// Create instance of mongo database
 			const db = client.db(dbName);
 
-			const match: Match = await db
-				.collection("matches")
+			const matchScores: MatchScore = await db
+				.collection("matchScore")
 				.findOne({ _id: new ObjectID(id) });
 
-			res.json(match);
-			res.render("match", {
-				match,
+			res.json(matchScores);
+			res.render("matchScores", {
+				matchScores,
 			});
 		} catch (error: any) {
 			debug(error.stack);
@@ -105,9 +105,9 @@ matchesRouter.route("/:id").get((req: Request, res: Response) => {
 	})();
 });
 
-matchesRouter.route("/").post((req: Request, res: Response) => {
-	const newMatch = req.body;
-	console.log("newMatch", newMatch);
+matchScoresRouter.route("/").post((req: Request, res: Response) => {
+	const newMatchScore = req.body;
+	console.log("newMatchScore", newMatchScore);
 	console.log("req.body", req.body);
 	(async function mongo() {
 		let client: typeof MongoClient | undefined;
@@ -118,15 +118,16 @@ matchesRouter.route("/").post((req: Request, res: Response) => {
 			// Create instance of mongo database
 			const db = client.db(dbName);
 
-			const match: Match = await db.collection("matches").insertOne({
-				weekNumber: newMatch.weekNumber,
-				leagueId: newMatch.leagueId,
-				matchDate: newMatch.matchDate,
-				golfer1Id: newMatch.golfer1Id,
-				golfer2Id: newMatch.golfer2Id,
-			});
+			const matchScore: MatchScore = await db
+				.collection("match-scores")
+				.insertOne({
+					matchId: newMatchScore.matchId,
+					golferId: newMatchScore.golferId,
+					totalScore: newMatchScore.totalScore,
+					holeScores: newMatchScore.holeScores,
+				});
 
-			res.json(match);
+			res.json(matchScore);
 			res.render("match", {});
 		} catch (error: any) {
 			debug(error.stack);
@@ -138,4 +139,4 @@ matchesRouter.route("/").post((req: Request, res: Response) => {
 	})();
 });
 
-export default matchesRouter;
+export default matchScoresRouter;
