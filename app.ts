@@ -14,6 +14,7 @@ import path from "path";
 
 import cookieParser from "cookie-parser";
 import session from "express-session";
+import cors from "cors";
 
 const PORT = process.env.PORT || 5000;
 // Create an Express application
@@ -33,6 +34,13 @@ app.use(morgan("tiny"));
 app.use(express.static(path.join(__dirname, "/public/")));
 
 app.use(express.json());
+app.use(
+	cors({
+		origin: "http://localhost:3000",
+		credentials: true,
+		allowedHeaders: "*",
+	})
+);
 //app.use(express.urlencoded({ extended: false }));
 //app.use(cookieParser());
 // app.use(session({secret: bspangGolfLeagueTracker}));

@@ -79,9 +79,9 @@ golfersRouter.route("/").post((req: Request, res: Response) => {
 			const db = client.db(dbName);
 
 			const golfer = await db.collection("golfers").insertOne({
-				FirstName: newGolfer.FirstName,
-				LastName: newGolfer.LastName,
-				Handicap: newGolfer.Handicap,
+				firstName: newGolfer.firstName,
+				lastName: newGolfer.lastName,
+				handicap: newGolfer.handicap,
 			});
 
 			res.json(golfer);
@@ -100,9 +100,7 @@ golfersRouter.route("/:id").delete((req: Request, res: Response) => {
 	(async function mongo() {
 		let client;
 		try {
-			client = await MongoClient.connect(
-				mongoConnectionString
-			);
+			client = await MongoClient.connect(mongoConnectionString);
 			debug("Connected to the MongoDb server");
 
 			// Create instance of mongo database
