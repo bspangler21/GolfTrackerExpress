@@ -34,6 +34,7 @@ const golfersRouter = require("./src/routers/golfersRouter");
 const adminRouter = require("./src/routers/adminRouter");
 const authRouter = require("./src/routers/authRouter");
 const matchesRouter = require("./src/routers/matchesRouter");
+const matchScoresRouter = require("./src/routers/matchScoresRouter");
 // tiny for less information; combined for more information
 app.use(morgan("tiny"));
 
@@ -53,6 +54,7 @@ app.use(cookieParser());
 app.use("/golfers", golfersRouter);
 app.use("/admin", adminRouter);
 app.use("/matches", matchesRouter);
+app.use("/matchScores", matchScoresRouter);
 // app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {
