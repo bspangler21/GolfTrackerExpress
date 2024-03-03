@@ -138,4 +138,30 @@ matchesRouter.route("/").post((req: Request, res: Response) => {
 	})();
 });
 
+matchesRouter.route("/:id").delete((req: Request, res: Response) => {
+	const id = req.params.id;
+	(async function mongo() {
+		let client;
+		try {
+			client = await MongoClient.connect(mongoConnectionString);
+			debug("Connected to the MongoDb server");
+
+			// Create instance of mongo database
+			const db = client.db(dbName);
+
+			const match = await db
+				.collection("matches")
+				.deleteOne({ _id: new ObjectID(id) });
+
+			res.json(match);
+			res.render("match", {
+				match,
+			});
+		} catch (error: any) {
+			debug(error.stack);
+		}
+		// client.close();
+	})();
+});
+
 export default matchesRouter;
